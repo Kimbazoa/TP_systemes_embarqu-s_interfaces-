@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x4EE9A21554C860A2",
+      "boundary_crc": "0xC08DBB73DAAC79C4",
       "device": "xc7z020clg484-1",
       "name": "VGA_source_bd",
       "synth_flow_mode": "Hierarchical",
@@ -13,7 +13,7 @@
       "c_counter_binary_0": "",
       "rst_clk_wiz_0_107M": "",
       "v_tc_0": "",
-      "xlslice_0": ""
+      "Bit_extraction1_0": ""
     },
     "ports": {
       "clk": {
@@ -51,17 +51,17 @@
       },
       "R": {
         "direction": "O",
-        "left": "3",
+        "left": "7",
         "right": "0"
       },
       "G": {
         "direction": "O",
-        "left": "3",
+        "left": "7",
         "right": "0"
       },
       "B": {
         "direction": "O",
-        "left": "3",
+        "left": "7",
         "right": "0"
       },
       "hsync_out_0": {
@@ -172,21 +172,33 @@
           }
         }
       },
-      "xlslice_0": {
-        "vlnv": "xilinx.com:ip:xlslice:1.0",
-        "xci_name": "VGA_source_bd_xlslice_0_0",
-        "parameters": {
-          "DIN_FROM": {
-            "value": "7"
+      "Bit_extraction1_0": {
+        "vlnv": "xilinx.com:module_ref:Bit_extraction1:1.0",
+        "xci_name": "VGA_source_bd_Bit_extraction1_0_1",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "Bit_extraction1",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "DIN": {
+            "direction": "I",
+            "left": "3",
+            "right": "0",
+            "parameters": {
+              "LAYERED_METADATA": {
+                "value": "xilinx.com:interface:datatypes:1.0 {DATA {datatype {name {attribs {resolve_type immediate dependency {} format string minimum {} maximum {}} value data} bitwidth {attribs {resolve_type generated dependency bitwidth format long minimum {} maximum {}} value 8} bitoffset {attribs {resolve_type immediate dependency {} format long minimum {} maximum {}} value 0} integer {signed {attribs {resolve_type immediate dependency {} format bool minimum {} maximum {}} value false}}}} DATA_WIDTH 8}",
+                "value_src": "ip_prop"
+              }
+            }
           },
-          "DIN_TO": {
-            "value": "4"
+          "DOUT": {
+            "direction": "O",
+            "left": "7",
+            "right": "0"
           },
-          "DIN_WIDTH": {
-            "value": "8"
-          },
-          "DOUT_WIDTH": {
-            "value": "4"
+          "Sel_ActVideo": {
+            "direction": "I"
           }
         }
       }
@@ -235,27 +247,28 @@
       "v_tc_0_active_video_out": {
         "ports": [
           "v_tc_0/active_video_out",
-          "c_counter_binary_0/CE"
-        ]
-      },
-      "c_counter_binary_0_Q": {
-        "ports": [
-          "c_counter_binary_0/Q",
-          "xlslice_0/Din"
-        ]
-      },
-      "xlslice_0_Dout": {
-        "ports": [
-          "xlslice_0/Dout",
-          "R",
-          "G",
-          "B"
+          "c_counter_binary_0/CE",
+          "Bit_extraction1_0/Sel_ActVideo"
         ]
       },
       "v_tc_0_vsync_out": {
         "ports": [
           "v_tc_0/vsync_out",
           "vsync_out_0"
+        ]
+      },
+      "c_counter_binary_0_Q": {
+        "ports": [
+          "c_counter_binary_0/Q",
+          "Bit_extraction1_0/DIN"
+        ]
+      },
+      "Bit_extraction1_0_DOUT": {
+        "ports": [
+          "Bit_extraction1_0/DOUT",
+          "B",
+          "G",
+          "R"
         ]
       }
     }

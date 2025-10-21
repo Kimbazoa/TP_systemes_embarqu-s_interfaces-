@@ -37,6 +37,13 @@ if { [string first $scripts_vivado_version $current_vivado_version] == -1 } {
 # To test this script, run the following commands from Vivado Tcl console:
 # source VGA_source_bd_script.tcl
 
+
+# The design that will be created by this Tcl script contains the following 
+# module references:
+# Bit_extraction1
+
+# Please add the sources of those modules before sourcing this Tcl script.
+
 # If there is no project opened, this script will create a
 # project, but make sure you do not have an existing project
 # <./myproj/project_1.xpr> in the current working folder.
@@ -158,9 +165,9 @@ proc create_root_design { parentCell } {
   # Create interface ports
 
   # Create ports
-  set B [ create_bd_port -dir O -from 3 -to 0 B ]
-  set G [ create_bd_port -dir O -from 3 -to 0 G ]
-  set R [ create_bd_port -dir O -from 3 -to 0 R ]
+  set B [ create_bd_port -dir O -from 7 -to 0 B ]
+  set G [ create_bd_port -dir O -from 7 -to 0 G ]
+  set R [ create_bd_port -dir O -from 7 -to 0 R ]
   set clk [ create_bd_port -dir I -type clk -freq_hz 100000000 clk ]
   set_property -dict [ list \
    CONFIG.PHASE {0.000} \
@@ -172,6 +179,17 @@ proc create_root_design { parentCell } {
  ] $reset_n
   set vsync_out_0 [ create_bd_port -dir O vsync_out_0 ]
 
+  # Create instance: Bit_extraction1_0, and set properties
+  set block_name Bit_extraction1
+  set block_cell_name Bit_extraction1_0
+  if { [catch {set Bit_extraction1_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
+     catch {common::send_msg_id "BD_TCL-105" "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   } elseif { $Bit_extraction1_0 eq "" } {
+     catch {common::send_msg_id "BD_TCL-106" "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   }
+  
   # Create instance: c_counter_binary_0, and set properties
   set c_counter_binary_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:c_counter_binary:12.0 c_counter_binary_0 ]
   set_property -dict [ list \
@@ -233,26 +251,17 @@ proc create_root_design { parentCell } {
    CONFIG.vertical_sync_detection {true} \
  ] $v_tc_0
 
-  # Create instance: xlslice_0, and set properties
-  set xlslice_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 xlslice_0 ]
-  set_property -dict [ list \
-   CONFIG.DIN_FROM {7} \
-   CONFIG.DIN_TO {4} \
-   CONFIG.DIN_WIDTH {8} \
-   CONFIG.DOUT_WIDTH {4} \
- ] $xlslice_0
-
   # Create port connections
-  connect_bd_net -net c_counter_binary_0_Q [get_bd_pins c_counter_binary_0/Q] [get_bd_pins xlslice_0/Din]
+  connect_bd_net -net Bit_extraction1_0_DOUT [get_bd_ports B] [get_bd_ports G] [get_bd_ports R] [get_bd_pins Bit_extraction1_0/DOUT]
+  connect_bd_net -net c_counter_binary_0_Q [get_bd_pins Bit_extraction1_0/DIN] [get_bd_pins c_counter_binary_0/Q]
   connect_bd_net -net clk_wiz_0_clk_out2 [get_bd_pins c_counter_binary_0/CLK] [get_bd_pins clk_wiz_0/clk_out2] [get_bd_pins rst_clk_wiz_0_107M/slowest_sync_clk] [get_bd_pins v_tc_0/clk]
   connect_bd_net -net clk_wiz_0_locked [get_bd_pins clk_wiz_0/locked] [get_bd_pins rst_clk_wiz_0_107M/dcm_locked]
   connect_bd_net -net reset_rtl_1 [get_bd_ports reset_n] [get_bd_pins clk_wiz_0/resetn] [get_bd_pins rst_clk_wiz_0_107M/ext_reset_in]
   connect_bd_net -net rst_clk_wiz_0_107M_peripheral_aresetn [get_bd_pins rst_clk_wiz_0_107M/peripheral_aresetn] [get_bd_pins v_tc_0/resetn]
   connect_bd_net -net sys_clock_1 [get_bd_ports clk] [get_bd_pins clk_wiz_0/clk_in1]
-  connect_bd_net -net v_tc_0_active_video_out [get_bd_pins c_counter_binary_0/CE] [get_bd_pins v_tc_0/active_video_out]
+  connect_bd_net -net v_tc_0_active_video_out [get_bd_pins Bit_extraction1_0/Sel_ActVideo] [get_bd_pins c_counter_binary_0/CE] [get_bd_pins v_tc_0/active_video_out]
   connect_bd_net -net v_tc_0_hsync_out [get_bd_ports hsync_out_0] [get_bd_pins c_counter_binary_0/SCLR] [get_bd_pins v_tc_0/hsync_out]
   connect_bd_net -net v_tc_0_vsync_out [get_bd_ports vsync_out_0] [get_bd_pins v_tc_0/vsync_out]
-  connect_bd_net -net xlslice_0_Dout [get_bd_ports B] [get_bd_ports G] [get_bd_ports R] [get_bd_pins xlslice_0/Dout]
 
   # Create address segments
 

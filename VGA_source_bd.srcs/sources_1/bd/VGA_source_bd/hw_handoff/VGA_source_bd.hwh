@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Tue Oct 21 14:43:17 2025" VIVADOVERSION="2019.2">
+<EDKSYSTEM EDWVERSION="1.2" TIMESTAMP="Tue Oct 21 17:05:35 2025" VIVADOVERSION="2019.2">
 
   <SYSTEMINFO ARCH="zynq" BOARD="em.avnet.com:zed:part0:1.4" DEVICE="7z020" NAME="VGA_source_bd" PACKAGE="clg484" SPEEDGRADE="-1"/>
 
@@ -15,19 +15,19 @@
         <CONNECTION INSTANCE="rst_clk_wiz_0_107M" PORT="ext_reset_in"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="O" LEFT="3" NAME="R" RIGHT="0" SIGIS="undef" SIGNAME="xlslice_0_Dout">
+    <PORT DIR="O" LEFT="7" NAME="R" RIGHT="0" SIGIS="undef" SIGNAME="Bit_extraction1_0_DOUT">
       <CONNECTIONS>
-        <CONNECTION INSTANCE="xlslice_0" PORT="Dout"/>
+        <CONNECTION INSTANCE="Bit_extraction1_0" PORT="DOUT"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="O" LEFT="3" NAME="G" RIGHT="0" SIGIS="undef" SIGNAME="xlslice_0_Dout">
+    <PORT DIR="O" LEFT="7" NAME="G" RIGHT="0" SIGIS="undef" SIGNAME="Bit_extraction1_0_DOUT">
       <CONNECTIONS>
-        <CONNECTION INSTANCE="xlslice_0" PORT="Dout"/>
+        <CONNECTION INSTANCE="Bit_extraction1_0" PORT="DOUT"/>
       </CONNECTIONS>
     </PORT>
-    <PORT DIR="O" LEFT="3" NAME="B" RIGHT="0" SIGIS="undef" SIGNAME="xlslice_0_Dout">
+    <PORT DIR="O" LEFT="7" NAME="B" RIGHT="0" SIGIS="undef" SIGNAME="Bit_extraction1_0_DOUT">
       <CONNECTIONS>
-        <CONNECTION INSTANCE="xlslice_0" PORT="Dout"/>
+        <CONNECTION INSTANCE="Bit_extraction1_0" PORT="DOUT"/>
       </CONNECTIONS>
     </PORT>
     <PORT DIR="O" NAME="hsync_out_0" SIGIS="undef" SIGNAME="v_tc_0_hsync_out">
@@ -45,6 +45,33 @@
   <EXTERNALINTERFACES/>
 
   <MODULES>
+    <MODULE COREREVISION="1" FULLNAME="/Bit_extraction1_0" HWVERSION="1.0" INSTANCE="Bit_extraction1_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="Bit_extraction1" VLNV="xilinx.com:module_ref:Bit_extraction1:1.0">
+      <DOCUMENTS/>
+      <PARAMETERS>
+        <PARAMETER NAME="Component_Name" VALUE="VGA_source_bd_Bit_extraction1_0_1"/>
+        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
+      </PARAMETERS>
+      <PORTS>
+        <PORT DIR="I" LEFT="3" NAME="DIN" RIGHT="0" SIGIS="undef" SIGNAME="c_counter_binary_0_Q">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="c_counter_binary_0" PORT="Q"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" LEFT="7" NAME="DOUT" RIGHT="0" SIGIS="undef" SIGNAME="Bit_extraction1_0_DOUT">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="External_Ports" PORT="B"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="G"/>
+            <CONNECTION INSTANCE="External_Ports" PORT="R"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="I" NAME="Sel_ActVideo" SIGIS="undef" SIGNAME="v_tc_0_active_video_out">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="v_tc_0" PORT="active_video_out"/>
+          </CONNECTIONS>
+        </PORT>
+      </PORTS>
+      <BUSINTERFACES/>
+    </MODULE>
     <MODULE COREREVISION="14" FULLNAME="/c_counter_binary_0" HWVERSION="12.0" INSTANCE="c_counter_binary_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="c_counter_binary" VLNV="xilinx.com:ip:c_counter_binary:12.0">
       <DOCUMENTS>
         <DOCUMENT SOURCE="http://www.xilinx.com/cgi-bin/docs/ipdoc?c=c_counter_binary;v=v12_0;d=pg121-c-counter-binary.pdf"/>
@@ -115,7 +142,7 @@
         </PORT>
         <PORT DIR="O" LEFT="7" NAME="Q" RIGHT="0" SIGIS="data" SIGNAME="c_counter_binary_0_Q">
           <CONNECTIONS>
-            <CONNECTION INSTANCE="xlslice_0" PORT="Din"/>
+            <CONNECTION INSTANCE="Bit_extraction1_0" PORT="DIN"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>
@@ -710,16 +737,16 @@
           </CONNECTIONS>
         </PORT>
         <PORT CLKFREQUENCY="107954545" DIR="O" NAME="clk_out1" SIGIS="clk"/>
-        <PORT DIR="O" NAME="locked" SIGIS="undef" SIGNAME="clk_wiz_0_locked">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="rst_clk_wiz_0_107M" PORT="dcm_locked"/>
-          </CONNECTIONS>
-        </PORT>
         <PORT CLKFREQUENCY="25265957" DIR="O" NAME="clk_out2" SIGIS="clk" SIGNAME="clk_wiz_0_clk_out2">
           <CONNECTIONS>
             <CONNECTION INSTANCE="c_counter_binary_0" PORT="CLK"/>
             <CONNECTION INSTANCE="rst_clk_wiz_0_107M" PORT="slowest_sync_clk"/>
             <CONNECTION INSTANCE="v_tc_0" PORT="clk"/>
+          </CONNECTIONS>
+        </PORT>
+        <PORT DIR="O" NAME="locked" SIGIS="undef" SIGNAME="clk_wiz_0_locked">
+          <CONNECTIONS>
+            <CONNECTION INSTANCE="rst_clk_wiz_0_107M" PORT="dcm_locked"/>
           </CONNECTIONS>
         </PORT>
       </PORTS>
@@ -978,6 +1005,7 @@
         <PORT DIR="O" NAME="active_video_out" SIGIS="undef" SIGNAME="v_tc_0_active_video_out">
           <CONNECTIONS>
             <CONNECTION INSTANCE="c_counter_binary_0" PORT="CE"/>
+            <CONNECTION INSTANCE="Bit_extraction1_0" PORT="Sel_ActVideo"/>
           </CONNECTIONS>
         </PORT>
         <PORT DIR="I" NAME="resetn" SIGIS="rst" SIGNAME="rst_clk_wiz_0_107M_peripheral_aresetn">
@@ -998,32 +1026,6 @@
           </PORTMAPS>
         </BUSINTERFACE>
       </BUSINTERFACES>
-    </MODULE>
-    <MODULE COREREVISION="2" FULLNAME="/xlslice_0" HWVERSION="1.0" INSTANCE="xlslice_0" IPTYPE="PERIPHERAL" IS_ENABLE="1" MODCLASS="PERIPHERAL" MODTYPE="xlslice" VLNV="xilinx.com:ip:xlslice:1.0">
-      <DOCUMENTS/>
-      <PARAMETERS>
-        <PARAMETER NAME="DIN_WIDTH" VALUE="8"/>
-        <PARAMETER NAME="DIN_FROM" VALUE="7"/>
-        <PARAMETER NAME="DIN_TO" VALUE="4"/>
-        <PARAMETER NAME="Component_Name" VALUE="VGA_source_bd_xlslice_0_0"/>
-        <PARAMETER NAME="DOUT_WIDTH" VALUE="4"/>
-        <PARAMETER NAME="EDK_IPTYPE" VALUE="PERIPHERAL"/>
-      </PARAMETERS>
-      <PORTS>
-        <PORT DIR="I" LEFT="7" NAME="Din" RIGHT="0" SIGIS="undef" SIGNAME="c_counter_binary_0_Q">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="c_counter_binary_0" PORT="Q"/>
-          </CONNECTIONS>
-        </PORT>
-        <PORT DIR="O" LEFT="3" NAME="Dout" RIGHT="0" SIGIS="undef" SIGNAME="xlslice_0_Dout">
-          <CONNECTIONS>
-            <CONNECTION INSTANCE="External_Ports" PORT="R"/>
-            <CONNECTION INSTANCE="External_Ports" PORT="G"/>
-            <CONNECTION INSTANCE="External_Ports" PORT="B"/>
-          </CONNECTIONS>
-        </PORT>
-      </PORTS>
-      <BUSINTERFACES/>
     </MODULE>
   </MODULES>
 
