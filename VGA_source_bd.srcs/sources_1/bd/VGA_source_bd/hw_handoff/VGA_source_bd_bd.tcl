@@ -165,9 +165,9 @@ proc create_root_design { parentCell } {
   # Create interface ports
 
   # Create ports
-  set B [ create_bd_port -dir O -from 7 -to 0 B ]
-  set G [ create_bd_port -dir O -from 7 -to 0 G ]
-  set R [ create_bd_port -dir O -from 7 -to 0 R ]
+  set B [ create_bd_port -dir O -from 3 -to 0 B ]
+  set G [ create_bd_port -dir O -from 3 -to 0 G ]
+  set R [ create_bd_port -dir O -from 3 -to 0 R ]
   set clk [ create_bd_port -dir I -type clk -freq_hz 100000000 clk ]
   set_property -dict [ list \
    CONFIG.PHASE {0.000} \
@@ -223,8 +223,28 @@ proc create_root_design { parentCell } {
    CONFIG.USE_BOARD_FLOW {true} \
  ] $clk_wiz_0
 
+  # Create instance: const_GND, and set properties
+  set const_GND [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 const_GND ]
+  set_property -dict [ list \
+   CONFIG.CONST_VAL {0} \
+ ] $const_GND
+
+  # Create instance: cosnt_VDD, and set properties
+  set cosnt_VDD [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 cosnt_VDD ]
+
+  # Create instance: proc_sys_reset_0, and set properties
+  set proc_sys_reset_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 proc_sys_reset_0 ]
+
   # Create instance: rst_clk_wiz_0_107M, and set properties
   set rst_clk_wiz_0_107M [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 rst_clk_wiz_0_107M ]
+
+  # Create instance: v_axi4s_vid_out_0, and set properties
+  set v_axi4s_vid_out_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:v_axi4s_vid_out:4.0 v_axi4s_vid_out_0 ]
+  set_property -dict [ list \
+   CONFIG.C_ADDR_WIDTH {10} \
+   CONFIG.C_HAS_ASYNC_CLK {1} \
+   CONFIG.C_S_AXIS_VIDEO_FORMAT {12} \
+ ] $v_axi4s_vid_out_0
 
   # Create instance: v_tc_0, and set properties
   set v_tc_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:v_tc:6.2 v_tc_0 ]
@@ -251,17 +271,61 @@ proc create_root_design { parentCell } {
    CONFIG.vertical_sync_detection {true} \
  ] $v_tc_0
 
+  # Create instance: v_tc_1, and set properties
+  set v_tc_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:v_tc:6.2 v_tc_1 ]
+  set_property -dict [ list \
+   CONFIG.GEN_F0_VFRAME_SIZE {525} \
+   CONFIG.GEN_F0_VSYNC_HSTART {695} \
+   CONFIG.GEN_F0_VSYNC_VEND {491} \
+   CONFIG.GEN_F0_VSYNC_VSTART {489} \
+   CONFIG.GEN_F1_VFRAME_SIZE {525} \
+   CONFIG.GEN_F1_VSYNC_VEND {491} \
+   CONFIG.GEN_F1_VSYNC_VSTART {489} \
+   CONFIG.GEN_HACTIVE_SIZE {640} \
+   CONFIG.GEN_HFRAME_SIZE {800} \
+   CONFIG.GEN_HSYNC_END {752} \
+   CONFIG.GEN_HSYNC_START {656} \
+   CONFIG.GEN_VACTIVE_SIZE {480} \
+   CONFIG.HAS_AXI4_LITE {false} \
+   CONFIG.VIDEO_MODE {480p} \
+   CONFIG.auto_generation_mode {true} \
+ ] $v_tc_1
+
+  # Create instance: v_vid_in_axi4s_0, and set properties
+  set v_vid_in_axi4s_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:v_vid_in_axi4s:4.0 v_vid_in_axi4s_0 ]
+  set_property -dict [ list \
+   CONFIG.C_ADDR_WIDTH {10} \
+   CONFIG.C_HAS_ASYNC_CLK {1} \
+   CONFIG.C_M_AXIS_VIDEO_FORMAT {12} \
+ ] $v_vid_in_axi4s_0
+
+  # Create interface connections
+  connect_bd_intf_net -intf_net v_tc_1_vtiming_out [get_bd_intf_pins v_axi4s_vid_out_0/vtiming_in] [get_bd_intf_pins v_tc_1/vtiming_out]
+  connect_bd_intf_net -intf_net v_vid_in_axi4s_0_video_out [get_bd_intf_pins v_axi4s_vid_out_0/video_in] [get_bd_intf_pins v_vid_in_axi4s_0/video_out]
+  connect_bd_intf_net -intf_net v_vid_in_axi4s_0_vtiming_out [get_bd_intf_pins v_tc_1/vtiming_in] [get_bd_intf_pins v_vid_in_axi4s_0/vtiming_out]
+
   # Create port connections
   connect_bd_net -net Bit_extraction1_0_DOUT [get_bd_ports B] [get_bd_ports G] [get_bd_ports R] [get_bd_pins Bit_extraction1_0/DOUT]
-  connect_bd_net -net c_counter_binary_0_Q [get_bd_pins Bit_extraction1_0/DIN] [get_bd_pins c_counter_binary_0/Q]
-  connect_bd_net -net clk_wiz_0_clk_out2 [get_bd_pins c_counter_binary_0/CLK] [get_bd_pins clk_wiz_0/clk_out2] [get_bd_pins rst_clk_wiz_0_107M/slowest_sync_clk] [get_bd_pins v_tc_0/clk]
-  connect_bd_net -net clk_wiz_0_locked [get_bd_pins clk_wiz_0/locked] [get_bd_pins rst_clk_wiz_0_107M/dcm_locked]
-  connect_bd_net -net reset_rtl_1 [get_bd_ports reset_n] [get_bd_pins clk_wiz_0/resetn] [get_bd_pins rst_clk_wiz_0_107M/ext_reset_in]
-  connect_bd_net -net rst_clk_wiz_0_107M_peripheral_aresetn [get_bd_pins rst_clk_wiz_0_107M/peripheral_aresetn] [get_bd_pins v_tc_0/resetn]
+  connect_bd_net -net c_counter_binary_0_Q [get_bd_pins c_counter_binary_0/Q] [get_bd_pins v_vid_in_axi4s_0/vid_data]
+  connect_bd_net -net clk_wiz_0_clk_out1 [get_bd_pins clk_wiz_0/clk_out1] [get_bd_pins proc_sys_reset_0/slowest_sync_clk] [get_bd_pins v_axi4s_vid_out_0/aclk] [get_bd_pins v_vid_in_axi4s_0/aclk]
+  connect_bd_net -net clk_wiz_0_clk_out2 [get_bd_pins c_counter_binary_0/CLK] [get_bd_pins clk_wiz_0/clk_out2] [get_bd_pins rst_clk_wiz_0_107M/slowest_sync_clk] [get_bd_pins v_axi4s_vid_out_0/vid_io_out_clk] [get_bd_pins v_tc_0/clk] [get_bd_pins v_tc_1/clk] [get_bd_pins v_vid_in_axi4s_0/vid_io_in_clk]
+  connect_bd_net -net clk_wiz_0_locked [get_bd_pins clk_wiz_0/locked] [get_bd_pins proc_sys_reset_0/dcm_locked] [get_bd_pins rst_clk_wiz_0_107M/dcm_locked]
+  connect_bd_net -net const_GND_dout [get_bd_pins const_GND/dout] [get_bd_pins v_axi4s_vid_out_0/vid_io_out_reset] [get_bd_pins v_vid_in_axi4s_0/vid_io_in_reset]
+  connect_bd_net -net cosnt_VDD_dout [get_bd_pins cosnt_VDD/dout] [get_bd_pins v_axi4s_vid_out_0/vid_io_out_ce] [get_bd_pins v_tc_1/clken] [get_bd_pins v_tc_1/det_clken] [get_bd_pins v_vid_in_axi4s_0/aclken] [get_bd_pins v_vid_in_axi4s_0/vid_io_in_ce]
+  connect_bd_net -net proc_sys_reset_0_peripheral_aresetn [get_bd_pins proc_sys_reset_0/peripheral_aresetn] [get_bd_pins v_axi4s_vid_out_0/aresetn] [get_bd_pins v_vid_in_axi4s_0/aresetn]
+  connect_bd_net -net reset_rtl_1 [get_bd_ports reset_n] [get_bd_pins clk_wiz_0/resetn] [get_bd_pins proc_sys_reset_0/ext_reset_in] [get_bd_pins rst_clk_wiz_0_107M/ext_reset_in]
+  connect_bd_net -net rst_clk_wiz_0_107M_peripheral_aresetn [get_bd_pins rst_clk_wiz_0_107M/peripheral_aresetn] [get_bd_pins v_tc_0/resetn] [get_bd_pins v_tc_1/resetn]
   connect_bd_net -net sys_clock_1 [get_bd_ports clk] [get_bd_pins clk_wiz_0/clk_in1]
-  connect_bd_net -net v_tc_0_active_video_out [get_bd_pins Bit_extraction1_0/Sel_ActVideo] [get_bd_pins c_counter_binary_0/CE] [get_bd_pins v_tc_0/active_video_out]
-  connect_bd_net -net v_tc_0_hsync_out [get_bd_ports hsync_out_0] [get_bd_pins c_counter_binary_0/SCLR] [get_bd_pins v_tc_0/hsync_out]
-  connect_bd_net -net v_tc_0_vsync_out [get_bd_ports vsync_out_0] [get_bd_pins v_tc_0/vsync_out]
+  connect_bd_net -net v_axi4s_vid_out_0_vid_active_video [get_bd_pins Bit_extraction1_0/Sel_ActVideo] [get_bd_pins v_axi4s_vid_out_0/vid_active_video]
+  connect_bd_net -net v_axi4s_vid_out_0_vid_data [get_bd_pins Bit_extraction1_0/DIN] [get_bd_pins v_axi4s_vid_out_0/vid_data]
+  connect_bd_net -net v_axi4s_vid_out_0_vid_hsync [get_bd_ports hsync_out_0] [get_bd_pins v_axi4s_vid_out_0/vid_hsync]
+  connect_bd_net -net v_axi4s_vid_out_0_vid_vsync [get_bd_ports vsync_out_0] [get_bd_pins v_axi4s_vid_out_0/vid_vsync]
+  connect_bd_net -net v_axi4s_vid_out_0_vtg_ce [get_bd_pins v_axi4s_vid_out_0/vtg_ce] [get_bd_pins v_tc_1/gen_clken]
+  connect_bd_net -net v_tc_0_active_video_out [get_bd_pins c_counter_binary_0/CE] [get_bd_pins v_tc_0/active_video_out] [get_bd_pins v_vid_in_axi4s_0/vid_active_video]
+  connect_bd_net -net v_tc_0_hblank_out [get_bd_pins v_tc_0/hblank_out] [get_bd_pins v_vid_in_axi4s_0/vid_field_id] [get_bd_pins v_vid_in_axi4s_0/vid_hblank]
+  connect_bd_net -net v_tc_0_hsync_out [get_bd_pins c_counter_binary_0/SCLR] [get_bd_pins v_tc_0/hsync_out] [get_bd_pins v_vid_in_axi4s_0/vid_hsync]
+  connect_bd_net -net v_tc_0_vblank_out [get_bd_pins v_tc_0/vblank_out] [get_bd_pins v_vid_in_axi4s_0/vid_vblank]
+  connect_bd_net -net v_tc_0_vsync_out [get_bd_pins v_tc_0/vsync_out] [get_bd_pins v_vid_in_axi4s_0/vid_vsync]
 
   # Create address segments
 

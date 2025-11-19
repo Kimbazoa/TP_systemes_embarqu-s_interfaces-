@@ -32,8 +32,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity Bit_extraction1 is
-    Port ( DIN : in STD_LOGIC_VECTOR (3 downto 0);
-           DOUT : out STD_LOGIC_VECTOR (7 downto 0);
+    Port ( DIN : in STD_LOGIC_VECTOR (7 downto 0);
+           DOUT : out STD_LOGIC_VECTOR (3 downto 0);
            Sel_ActVideo : in STD_LOGIC);
 end Bit_extraction1;
 

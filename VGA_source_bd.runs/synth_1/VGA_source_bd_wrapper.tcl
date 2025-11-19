@@ -17,6 +17,9 @@ proc create_report { reportName command } {
     send_msg_id runtcl-5 warning "$msg"
   }
 }
+set_param chipscope.maxJobs 2
+set_param xicom.use_bs_reader 1
+set_msg_config -id {Common 17-41} -limit 10000000
 create_project -in_memory -part xc7z020clg484-1
 
 set_param project.singleFileAddWarning.threshold 0
@@ -25,7 +28,7 @@ set_param synth.vivado.isSynthRun true
 set_msg_config -source 4 -id {IP_Flow 19-2162} -severity warning -new_severity info
 set_property webtalk.parent_dir C:/Users/on220149/VGA_source_bd/VGA_source_bd.cache/wt [current_project]
 set_property parent.project_path C:/Users/on220149/VGA_source_bd/VGA_source_bd.xpr [current_project]
-set_property XPM_LIBRARIES XPM_CDC [current_project]
+set_property XPM_LIBRARIES {XPM_CDC XPM_FIFO} [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language VHDL [current_project]
 set_property board_part em.avnet.com:zed:part0:1.4 [current_project]
@@ -42,6 +45,15 @@ set_property used_in_implementation false [get_files -all c:/Users/on220149/VGA_
 set_property used_in_implementation false [get_files -all c:/Users/on220149/VGA_source_bd/VGA_source_bd.srcs/sources_1/bd/VGA_source_bd/ip/VGA_source_bd_rst_clk_wiz_0_107M_0/VGA_source_bd_rst_clk_wiz_0_107M_0_ooc.xdc]
 set_property used_in_implementation false [get_files -all c:/Users/on220149/VGA_source_bd/VGA_source_bd.srcs/sources_1/bd/VGA_source_bd/ip/VGA_source_bd_v_tc_0_0/VGA_source_bd_v_tc_0_0_clocks.xdc]
 set_property used_in_implementation false [get_files -all c:/Users/on220149/VGA_source_bd/VGA_source_bd.srcs/sources_1/bd/VGA_source_bd/ip/VGA_source_bd_v_tc_0_0/VGA_source_bd_v_tc_0_0_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/on220149/VGA_source_bd/VGA_source_bd.srcs/sources_1/bd/VGA_source_bd/ip/VGA_source_bd_v_vid_in_axi4s_0_0/VGA_source_bd_v_vid_in_axi4s_0_0_clocks.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/on220149/VGA_source_bd/VGA_source_bd.srcs/sources_1/bd/VGA_source_bd/ip/VGA_source_bd_v_vid_in_axi4s_0_0/VGA_source_bd_v_vid_in_axi4s_0_0_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/on220149/VGA_source_bd/VGA_source_bd.srcs/sources_1/bd/VGA_source_bd/ip/VGA_source_bd_v_tc_1_0/VGA_source_bd_v_tc_1_0_clocks.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/on220149/VGA_source_bd/VGA_source_bd.srcs/sources_1/bd/VGA_source_bd/ip/VGA_source_bd_v_tc_1_0/VGA_source_bd_v_tc_1_0_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/on220149/VGA_source_bd/VGA_source_bd.srcs/sources_1/bd/VGA_source_bd/ip/VGA_source_bd_v_axi4s_vid_out_0_0/VGA_source_bd_v_axi4s_vid_out_0_0_clocks.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/on220149/VGA_source_bd/VGA_source_bd.srcs/sources_1/bd/VGA_source_bd/ip/VGA_source_bd_v_axi4s_vid_out_0_0/VGA_source_bd_v_axi4s_vid_out_0_0_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/on220149/VGA_source_bd/VGA_source_bd.srcs/sources_1/bd/VGA_source_bd/ip/VGA_source_bd_proc_sys_reset_0_0/VGA_source_bd_proc_sys_reset_0_0_board.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/on220149/VGA_source_bd/VGA_source_bd.srcs/sources_1/bd/VGA_source_bd/ip/VGA_source_bd_proc_sys_reset_0_0/VGA_source_bd_proc_sys_reset_0_0.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/on220149/VGA_source_bd/VGA_source_bd.srcs/sources_1/bd/VGA_source_bd/ip/VGA_source_bd_proc_sys_reset_0_0/VGA_source_bd_proc_sys_reset_0_0_ooc.xdc]
 set_property used_in_implementation false [get_files -all C:/Users/on220149/VGA_source_bd/VGA_source_bd.srcs/sources_1/bd/VGA_source_bd/VGA_source_bd_ooc.xdc]
 
 # Mark all dcp files as not used in implementation to prevent them from being

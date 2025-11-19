@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xC08DBB73DAAC79C4",
+      "boundary_crc": "0x4EE9A21554C860A2",
       "device": "xc7z020clg484-1",
       "name": "VGA_source_bd",
       "synth_flow_mode": "Hierarchical",
@@ -13,7 +13,13 @@
       "c_counter_binary_0": "",
       "rst_clk_wiz_0_107M": "",
       "v_tc_0": "",
-      "Bit_extraction1_0": ""
+      "Bit_extraction1_0": "",
+      "v_vid_in_axi4s_0": "",
+      "v_tc_1": "",
+      "v_axi4s_vid_out_0": "",
+      "cosnt_VDD": "",
+      "const_GND": "",
+      "proc_sys_reset_0": ""
     },
     "ports": {
       "clk": {
@@ -51,17 +57,17 @@
       },
       "R": {
         "direction": "O",
-        "left": "7",
+        "left": "3",
         "right": "0"
       },
       "G": {
         "direction": "O",
-        "left": "7",
+        "left": "3",
         "right": "0"
       },
       "B": {
         "direction": "O",
-        "left": "7",
+        "left": "3",
         "right": "0"
       },
       "hsync_out_0": {
@@ -174,7 +180,7 @@
       },
       "Bit_extraction1_0": {
         "vlnv": "xilinx.com:module_ref:Bit_extraction1:1.0",
-        "xci_name": "VGA_source_bd_Bit_extraction1_0_1",
+        "xci_name": "VGA_source_bd_Bit_extraction1_0_2",
         "reference_info": {
           "ref_type": "hdl",
           "ref_name": "Bit_extraction1",
@@ -183,7 +189,7 @@
         "ports": {
           "DIN": {
             "direction": "I",
-            "left": "3",
+            "left": "7",
             "right": "0",
             "parameters": {
               "LAYERED_METADATA": {
@@ -194,20 +200,103 @@
           },
           "DOUT": {
             "direction": "O",
-            "left": "7",
+            "left": "3",
             "right": "0"
           },
           "Sel_ActVideo": {
             "direction": "I"
           }
         }
+      },
+      "v_vid_in_axi4s_0": {
+        "vlnv": "xilinx.com:ip:v_vid_in_axi4s:4.0",
+        "xci_name": "VGA_source_bd_v_vid_in_axi4s_0_0",
+        "parameters": {
+          "C_ADDR_WIDTH": {
+            "value": "10"
+          },
+          "C_HAS_ASYNC_CLK": {
+            "value": "1"
+          },
+          "C_M_AXIS_VIDEO_FORMAT": {
+            "value": "12"
+          }
+        }
+      },
+      "v_tc_1": {
+        "vlnv": "xilinx.com:ip:v_tc:6.2",
+        "xci_name": "VGA_source_bd_v_tc_1_0",
+        "parameters": {
+          "HAS_AXI4_LITE": {
+            "value": "false"
+          },
+          "VIDEO_MODE": {
+            "value": "480p"
+          },
+          "auto_generation_mode": {
+            "value": "true"
+          }
+        }
+      },
+      "v_axi4s_vid_out_0": {
+        "vlnv": "xilinx.com:ip:v_axi4s_vid_out:4.0",
+        "xci_name": "VGA_source_bd_v_axi4s_vid_out_0_0",
+        "parameters": {
+          "C_ADDR_WIDTH": {
+            "value": "10"
+          },
+          "C_HAS_ASYNC_CLK": {
+            "value": "1"
+          },
+          "C_S_AXIS_VIDEO_FORMAT": {
+            "value": "12"
+          }
+        }
+      },
+      "cosnt_VDD": {
+        "vlnv": "xilinx.com:ip:xlconstant:1.1",
+        "xci_name": "VGA_source_bd_xlconstant_0_0"
+      },
+      "const_GND": {
+        "vlnv": "xilinx.com:ip:xlconstant:1.1",
+        "xci_name": "VGA_source_bd_xlconstant_0_1",
+        "parameters": {
+          "CONST_VAL": {
+            "value": "0"
+          }
+        }
+      },
+      "proc_sys_reset_0": {
+        "vlnv": "xilinx.com:ip:proc_sys_reset:5.0",
+        "xci_name": "VGA_source_bd_proc_sys_reset_0_0"
+      }
+    },
+    "interface_nets": {
+      "v_vid_in_axi4s_0_video_out": {
+        "interface_ports": [
+          "v_vid_in_axi4s_0/video_out",
+          "v_axi4s_vid_out_0/video_in"
+        ]
+      },
+      "v_tc_1_vtiming_out": {
+        "interface_ports": [
+          "v_axi4s_vid_out_0/vtiming_in",
+          "v_tc_1/vtiming_out"
+        ]
+      },
+      "v_vid_in_axi4s_0_vtiming_out": {
+        "interface_ports": [
+          "v_tc_1/vtiming_in",
+          "v_vid_in_axi4s_0/vtiming_out"
+        ]
       }
     },
     "nets": {
       "clk_wiz_0_locked": {
         "ports": [
           "clk_wiz_0/locked",
-          "rst_clk_wiz_0_107M/dcm_locked"
+          "rst_clk_wiz_0_107M/dcm_locked",
+          "proc_sys_reset_0/dcm_locked"
         ]
       },
       "sys_clock_1": {
@@ -220,47 +309,46 @@
         "ports": [
           "reset_n",
           "clk_wiz_0/resetn",
-          "rst_clk_wiz_0_107M/ext_reset_in"
+          "rst_clk_wiz_0_107M/ext_reset_in",
+          "proc_sys_reset_0/ext_reset_in"
         ]
       },
       "clk_wiz_0_clk_out2": {
         "ports": [
           "clk_wiz_0/clk_out2",
           "c_counter_binary_0/CLK",
-          "rst_clk_wiz_0_107M/slowest_sync_clk",
-          "v_tc_0/clk"
+          "v_tc_0/clk",
+          "v_vid_in_axi4s_0/vid_io_in_clk",
+          "v_axi4s_vid_out_0/vid_io_out_clk",
+          "v_tc_1/clk",
+          "rst_clk_wiz_0_107M/slowest_sync_clk"
         ]
       },
       "rst_clk_wiz_0_107M_peripheral_aresetn": {
         "ports": [
           "rst_clk_wiz_0_107M/peripheral_aresetn",
-          "v_tc_0/resetn"
+          "v_tc_0/resetn",
+          "v_tc_1/resetn"
         ]
       },
       "v_tc_0_hsync_out": {
         "ports": [
           "v_tc_0/hsync_out",
           "c_counter_binary_0/SCLR",
-          "hsync_out_0"
+          "v_vid_in_axi4s_0/vid_hsync"
         ]
       },
       "v_tc_0_active_video_out": {
         "ports": [
           "v_tc_0/active_video_out",
           "c_counter_binary_0/CE",
-          "Bit_extraction1_0/Sel_ActVideo"
+          "v_vid_in_axi4s_0/vid_active_video"
         ]
       },
       "v_tc_0_vsync_out": {
         "ports": [
           "v_tc_0/vsync_out",
-          "vsync_out_0"
-        ]
-      },
-      "c_counter_binary_0_Q": {
-        "ports": [
-          "c_counter_binary_0/Q",
-          "Bit_extraction1_0/DIN"
+          "v_vid_in_axi4s_0/vid_vsync"
         ]
       },
       "Bit_extraction1_0_DOUT": {
@@ -269,6 +357,87 @@
           "B",
           "G",
           "R"
+        ]
+      },
+      "c_counter_binary_0_Q": {
+        "ports": [
+          "c_counter_binary_0/Q",
+          "v_vid_in_axi4s_0/vid_data"
+        ]
+      },
+      "v_tc_0_hblank_out": {
+        "ports": [
+          "v_tc_0/hblank_out",
+          "v_vid_in_axi4s_0/vid_field_id",
+          "v_vid_in_axi4s_0/vid_hblank"
+        ]
+      },
+      "v_tc_0_vblank_out": {
+        "ports": [
+          "v_tc_0/vblank_out",
+          "v_vid_in_axi4s_0/vid_vblank"
+        ]
+      },
+      "cosnt_VDD_dout": {
+        "ports": [
+          "cosnt_VDD/dout",
+          "v_vid_in_axi4s_0/vid_io_in_ce",
+          "v_vid_in_axi4s_0/aclken",
+          "v_axi4s_vid_out_0/vid_io_out_ce",
+          "v_tc_1/clken",
+          "v_tc_1/det_clken"
+        ]
+      },
+      "const_GND_dout": {
+        "ports": [
+          "const_GND/dout",
+          "v_vid_in_axi4s_0/vid_io_in_reset",
+          "v_axi4s_vid_out_0/vid_io_out_reset"
+        ]
+      },
+      "clk_wiz_0_clk_out1": {
+        "ports": [
+          "clk_wiz_0/clk_out1",
+          "v_vid_in_axi4s_0/aclk",
+          "v_axi4s_vid_out_0/aclk",
+          "proc_sys_reset_0/slowest_sync_clk"
+        ]
+      },
+      "v_axi4s_vid_out_0_vtg_ce": {
+        "ports": [
+          "v_axi4s_vid_out_0/vtg_ce",
+          "v_tc_1/gen_clken"
+        ]
+      },
+      "v_axi4s_vid_out_0_vid_vsync": {
+        "ports": [
+          "v_axi4s_vid_out_0/vid_vsync",
+          "vsync_out_0"
+        ]
+      },
+      "v_axi4s_vid_out_0_vid_hsync": {
+        "ports": [
+          "v_axi4s_vid_out_0/vid_hsync",
+          "hsync_out_0"
+        ]
+      },
+      "v_axi4s_vid_out_0_vid_data": {
+        "ports": [
+          "v_axi4s_vid_out_0/vid_data",
+          "Bit_extraction1_0/DIN"
+        ]
+      },
+      "v_axi4s_vid_out_0_vid_active_video": {
+        "ports": [
+          "v_axi4s_vid_out_0/vid_active_video",
+          "Bit_extraction1_0/Sel_ActVideo"
+        ]
+      },
+      "proc_sys_reset_0_peripheral_aresetn": {
+        "ports": [
+          "proc_sys_reset_0/peripheral_aresetn",
+          "v_vid_in_axi4s_0/aresetn",
+          "v_axi4s_vid_out_0/aresetn"
         ]
       }
     }

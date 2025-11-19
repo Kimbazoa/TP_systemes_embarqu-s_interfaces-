@@ -3,8 +3,8 @@
 -- Tool Version: Vivado v.2019.2 (win64) Build 2708876 Wed Nov  6 21:40:23 MST 2019
 -- Date        : Tue Oct 21 14:44:49 2025
 -- Host        : PT-PC-E0213W running 64-bit major release  (build 9200)
--- Command     : write_vhdl -force -mode synth_stub
---               c:/Users/on220149/VGA_source_bd/VGA_source_bd.srcs/sources_1/bd/VGA_source_bd/ip/VGA_source_bd_clk_wiz_0_0/VGA_source_bd_clk_wiz_0_0_stub.vhdl
+-- Command     : write_vhdl -force -mode synth_stub -rename_top VGA_source_bd_clk_wiz_0_0 -prefix
+--               VGA_source_bd_clk_wiz_0_0_ VGA_source_bd_clk_wiz_0_0_stub.vhdl
 -- Design      : VGA_source_bd_clk_wiz_0_0
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7z020clg484-1

@@ -18,7 +18,25 @@ set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==VGA_source_bd_r
 # IP: bd/VGA_source_bd/ip/VGA_source_bd_v_tc_0_0/VGA_source_bd_v_tc_0_0.xci
 set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==VGA_source_bd_v_tc_0_0 || ORIG_REF_NAME==VGA_source_bd_v_tc_0_0} -quiet] -quiet
 
-# IP: bd/VGA_source_bd/ip/VGA_source_bd_Bit_extraction1_0_1/VGA_source_bd_Bit_extraction1_0_1.xci
-set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==VGA_source_bd_Bit_extraction1_0_1 || ORIG_REF_NAME==VGA_source_bd_Bit_extraction1_0_1} -quiet] -quiet
+# IP: bd/VGA_source_bd/ip/VGA_source_bd_Bit_extraction1_0_2/VGA_source_bd_Bit_extraction1_0_2.xci
+set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==VGA_source_bd_Bit_extraction1_0_2 || ORIG_REF_NAME==VGA_source_bd_Bit_extraction1_0_2} -quiet] -quiet
+
+# IP: bd/VGA_source_bd/ip/VGA_source_bd_v_vid_in_axi4s_0_0/VGA_source_bd_v_vid_in_axi4s_0_0.xci
+set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==VGA_source_bd_v_vid_in_axi4s_0_0 || ORIG_REF_NAME==VGA_source_bd_v_vid_in_axi4s_0_0} -quiet] -quiet
+
+# IP: bd/VGA_source_bd/ip/VGA_source_bd_v_tc_1_0/VGA_source_bd_v_tc_1_0.xci
+set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==VGA_source_bd_v_tc_1_0 || ORIG_REF_NAME==VGA_source_bd_v_tc_1_0} -quiet] -quiet
+
+# IP: bd/VGA_source_bd/ip/VGA_source_bd_v_axi4s_vid_out_0_0/VGA_source_bd_v_axi4s_vid_out_0_0.xci
+set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==VGA_source_bd_v_axi4s_vid_out_0_0 || ORIG_REF_NAME==VGA_source_bd_v_axi4s_vid_out_0_0} -quiet] -quiet
+
+# IP: bd/VGA_source_bd/ip/VGA_source_bd_xlconstant_0_0/VGA_source_bd_xlconstant_0_0.xci
+set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==VGA_source_bd_xlconstant_0_0 || ORIG_REF_NAME==VGA_source_bd_xlconstant_0_0} -quiet] -quiet
+
+# IP: bd/VGA_source_bd/ip/VGA_source_bd_xlconstant_0_1/VGA_source_bd_xlconstant_0_1.xci
+set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==VGA_source_bd_xlconstant_0_1 || ORIG_REF_NAME==VGA_source_bd_xlconstant_0_1} -quiet] -quiet
+
+# IP: bd/VGA_source_bd/ip/VGA_source_bd_proc_sys_reset_0_0/VGA_source_bd_proc_sys_reset_0_0.xci
+set_property DONT_TOUCH TRUE [get_cells -hier -filter {REF_NAME==VGA_source_bd_proc_sys_reset_0_0 || ORIG_REF_NAME==VGA_source_bd_proc_sys_reset_0_0} -quiet] -quiet
 
 # XDC: bd/VGA_source_bd/VGA_source_bd_ooc.xdc
